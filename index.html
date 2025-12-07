@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPro Solutions | Professional Academic Assistance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Logo watermark */
+        /* Logo watermark */
+/* Logo watermark */
+.watermark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="rgba(52, 152, 219, 0.05)" transform="rotate(-30 200 100)">iif_Edu Solutions</text></svg>');
+    background-repeat: repeat;
+    pointer-events: none;
+    z-index: -1;
+}
+        
+        /* Header & Logo */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            color: var(--secondary-color);
+            font-size: 28px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo-text span {
+            color: var(--secondary-color);
+        }
+        
+        /* Login Page */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .login-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        
+        .login-logo {
+            margin-bottom: 30px;
+        }
+        
+        .login-logo .logo-text {
+            font-size: 32px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .login-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .error-message {
+            color: var(--accent-color);
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        /* Logout button */
+        .logout-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Main content (hidden until login) */
+        .main-content {
+            display: none;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .service-content {
+            padding: 25px;
+        }
+        
+        .service-content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .service-content p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .service-price {
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 20px;
+        }
+        
+        /* About Us Section */
+        .about-us {
+            background-color: var(--light-color);
+            padding: 80px 0;
+        }
+        
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .about-content h2 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .about-content p {
+            margin-bottom: 20px;
+            font-size: 17px;
+        }
+        
+        /* Order Page */
+        .order-page {
+            padding: 40px 0 80px;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .order-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .order-title h2 {
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+        
+        .service-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 60px 0;
+        }
+        
+        .service-button {
+            background-color: white;
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-button:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-button i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+        
+        .service-button h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .service-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--secondary-color);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+        
+        .service-button:hover::after {
+            transform: scaleX(1);
+        }
+        
+        /* Order Form */
+        .order-form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .reliable-message {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        .reliable-message h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .order-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .duration-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .duration-option {
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .duration-option:hover, .duration-option.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .urgent-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(231, 76, 60, 0.1);
+            border-radius: 5px;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .urgent-option input {
+            transform: scale(1.3);
+        }
+        
+        /* Payment Section */
+        .payment-section {
+            margin-top: 30px;
+        }
+        
+        .payment-button {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .payment-button:hover {
+            background-color: #219653;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-options {
+            display: none;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #eee;
+        }
+        
+        .payment-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .payment-option:last-child {
+            border-bottom: none;
+        }
+        
+        .payment-option:hover {
+            background-color: white;
+        }
+        
+        .payment-price {
+            font-weight: 700;
+            color: var(--success-color);
+            font-size: 20px;
+        }
+        
+        .whatsapp-contact {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(37, 211, 102, 0.1);
+            border-radius: 5px;
+        }
+        
+        .whatsapp-contact a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #25D366;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-section p {
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .login-box {
+                padding: 30px 20px;
+            }
+            
+            .order-form-container {
+                padding: 30px 20px;
+            }
+            
+            .service-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-page">
+        <div class="login-box">
+            <div class="login-logo">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap logo-icon"></i>
+                    <div class="logo-text">iif_Edu<span>Solutions</span></div>
+                </div>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Login to Dashboard</button>
+                
+                <div id="errorMessage" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i> Incorrect email or password. Please try again.
+                </div>
+                
+                <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                    Demo login: email: student@example.com | password: demo123
+                </p>
+            </form>
+        </div>
+    </div> 
+    
+    <!-- Main Content (Visible after login) -->
+    <div id="mainContent" class="main-content">
+        <!-- Watermark -->
+        <div class="watermark"></div>
+        
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-graduation-cap logo-icon"></i>
+                        <div class="logo-text">iif_Edu<span>Solutions</span></div>
+                    </div>
+                    
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Professional Academic Assistance Services</h1>
+                <p>We provide high-quality assignments, PPTs, thesis, and practical notebooks prepared by subject matter experts. Your academic success is our priority.</p>
+                <button id="exploreServices" class="cta-button">Explore Our Services</button>
+            </div>
+        </section>
+        
+        <!-- Services Section -->
+        <section class="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Premium Services</h2>
+                    <p>We offer a wide range of academic assistance services with guaranteed quality and timely delivery.</p>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                        <div class="service-content">
+                            <h3>Assignments</h3>
+                            <p>Well-researched and properly formatted assignments for all subjects and academic levels.</p>
+                            <div class="service-price">Starting from Rs.500</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixlib=rb-1.2.1&auto=format&fit=crop&w-1350&q=80');"></div>
+                        <div class="service-content">
+                            <h3>Presentations (PPTs)</h3>
+                            <p>Professional PowerPoint presentations with engaging visuals and well-structured content.</p>
+                            <div class="service-price">Starting from Rs.500</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                        <div class="service-content">
+                            <h3>Thesis & Dissertations</h3>
+                            <p>Comprehensive thesis writing services with research, analysis, and proper formatting.</p>
+                            <div class="service-price">Starting from Rs.1000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                        <div class="service-content">
+                            <h3>Practical Notebooks</h3>
+                            <p>Well-documented practical notebooks with accurate procedures, results, and analysis.</p>
+                            <div class="service-price">Starting from Rs.3000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About Us Section -->
+        <section class="about-us">
+            <div class="container">
+                <div class="about-content">
+                    <h2>About iif_Edu Solutions</h2>
+                    <p>Founded in 2025, iif_Edu Solutions has established itself as a premier provider of academic assistance services. Our mission is to support students in achieving their educational goals by providing high-quality, customized academic work.</p>
+                    <p>We understand the pressures of academic life and the challenges students face in balancing coursework, part-time jobs, and personal commitments. That's why we've assembled a team of experienced professionals, including PhD holders, subject matter experts, and former academicians, to deliver work that meets the highest standards.</p>
+                    <p>At iif_Edu Solutions, we pride ourselves on our commitment to quality, originality, and timely delivery. All our work is thoroughly researched, properly referenced, and tailored to meet your specific requirements. We maintain strict confidentiality and ensure that all work is plagiarism-free.</p>
+                    <p>Our services are designed to complement your learning journey, providing you with models of excellent academic work that you can learn from and reference in your own studies. We believe in empowering students through knowledge and supporting them in their academic endeavors.</p>
+                    <p>With thousands of satisfied clients across universities worldwide, iif_Edu Solutions has built a reputation for reliability, professionalism, and excellence. We're not just a service; we're your academic partners, dedicated to helping you succeed.</p>
+                    <p>Our team is available 24/7 to address your queries and provide updates on your orders. We offer unlimited revisions to ensure complete satisfaction and maintain open communication throughout the process.</p>
+                    <p>Whether you're an undergraduate struggling with a complex assignment, a graduate student needing help with your thesis, or a professional requiring a well-crafted presentation, iif_Edu Solutions is here to help you excel.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Order Page (Initially Hidden) -->
+        <div id="orderPage" class="order-page" style="display: none;">
+            <div class="container">
+                <div class="order-title">
+                    <h2>Select Your Service</h2>
+                    <p>Choose from our range of professional academic services</p>
+                </div>
+                
+                <div class="service-buttons">
+                    <div class="service-button" data-service="assignments">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Assignments</h3>
+                    </div>
+                    
+                    <div class="service-button" data-service="ppts">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Presentations (PPTs)</h3>
+                    </div>
+                    
+                    <div class="service-button" data-service="thesis">
+                        <i class="fas fa-book"></i>
+                        <h3>Thesis & Dissertations</h3>
+                    </div>
+                    
+                    <div class="service-button" data-service="notebooks">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>Practical Notebooks</h3>
+                    </div>
+                </div>
+                
+                <!-- Order Form (Initially Hidden) -->
+                <div id="orderFormContainer" class="order-form-container" style="display: none;">
+                    <div class="reliable-message">
+                        <h3>Reliable & Professional Service</h3>
+                        <p>At iif_Edu Solutions, we guarantee high-quality, plagiarism-free work delivered on time. Our team of experts ensures that every order meets academic standards and your specific requirements.</p>
+                    </div>
+                    
+                    <form id="orderForm" class="order-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <input type="text" id="subject" placeholder="e.g., Computer Science, Business Management" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="topic">Topic *</label>
+                                <input type="text" id="topic" placeholder="e.g., Artificial Intelligence, Marketing Strategy" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="details">Work Details *</label>
+                            <textarea id="details" rows="4" placeholder="Please provide detailed requirements, word count, formatting style, and any specific instructions..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Delivery Duration *</label>
+                            <div id="durationOptions" class="duration-options">
+                                <!-- Duration options will be loaded based on service type -->
+                            </div>
+                            
+                            <div id="urgentOption" class="urgent-option" style="display: none;">
+                                <input type="checkbox" id="urgent">
+                                <label for="urgent"><strong>Urgent Delivery (30% extra charges)</strong> - Get your work delivered sooner</label>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-section">
+                            <button type="button" id="paymentButton" class="payment-button">
+                                <i class="fas fa-lock"></i> Proceed to Payment
+                            </button>
+                            
+                            <div id="paymentOptions" class="payment-options">
+                                <!-- Payment options will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="whatsapp-contact">
+                            <p>Need more details or have special requirements?</p>
+                            <a href="https://wa.me/03127726410" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Contact us on WhatsApp
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Contact Us</h3>
+                        <p><i class="fas fa-phone"></i> +92 3127726410</p>
+                        <p><i class="fas fa-envelope"></i> support@iif_Edusolutions.com</p>
+                        
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/iif_edus0lutions?igsh=czF5eWRyeHdia3Fy&utm_source=qr"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/iif_edus0lutions?igsh=czF5eWRyeHdia3Fy&utm_source=qr"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Our Locations</h3>
+                        <p><strong>UOG</strong><br>Arfa Kareem <br>block</p>
+                        <p><strong>Another location in Madina Syedan</strong></p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Quick Links</h3>
+                        <p><a href="#" style="color: #ddd; text-decoration: none;">Home</a></p>
+                        <p><a href="#orderPage" style="color: #ddd; text-decoration: none;">Our Services</a></p>
+                        <p><a href="#" style="color: #ddd; text-decoration: none;">Privacy Policy</a></p>
+                        <p><a href="#" style="color: #ddd; text-decoration: none;">Terms of Service</a></p>
+                    </div>
+                </div>
+                
+                <div class="copyright">
+                    <p>&copy; 2025 iif_Edu Solutions. All rights reserved. | Professional Academic Assistance Services</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Demo login credentials
+        const DEMO_EMAIL = "student@example.com";
+        const DEMO_PASSWORD = "demo123";
+        
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                showMainContent();
+            }
+            
+            // Login form submission
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const errorMessage = document.getElementById('errorMessage');
+                
+                if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
+                    // Successful login
+                    localStorage.setItem('isLoggedIn', 'true');
+                    showMainContent();
+                } else {
+                    // Show error
+                    errorMessage.style.display = 'block';
+                }
+            });
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                showLoginPage();
+            });
+            
+            // Explore services button
+            document.getElementById('exploreServices').addEventListener('click', function() {
+                showOrderPage();
+            });
+            
+            // Service buttons
+            const serviceButtons = document.querySelectorAll('.service-button');
+            serviceButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const service = this.getAttribute('data-service');
+                    showOrderForm(service);
+                });
+            });
+            
+            // Payment button
+            document.getElementById('paymentButton').addEventListener('click', function() {
+                showPaymentOptions();
+            });
+        });
+        
+        // Show main content after login
+        function showMainContent() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+        
+        // Show login page
+        function showLoginPage() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('orderPage').style.display = 'none';
+            document.getElementById('orderFormContainer').style.display = 'none';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // Show order page
+        function showOrderPage() {
+            document.getElementById('orderPage').style.display = 'block';
+            document.getElementById('orderFormContainer').style.display = 'none';
+            
+            // Scroll to order page
+            document.getElementById('orderPage').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Show order form for selected service
+        function showOrderForm(service) {
+            document.getElementById('orderFormContainer').style.display = 'block';
+            
+            // Set service-specific details
+            const serviceTitles = {
+                assignments: 'Assignments',
+                ppts: 'Presentations (PPTs)',
+                thesis: 'Thesis & Dissertations',
+                notebooks: 'Practical Notebooks'
+            };
+            
+            const serviceTitle = serviceTitles[service];
+            document.querySelector('.order-title h2').textContent = `Order ${serviceTitle}`;
+            
+            // Set up duration options based on service
+            const durationOptions = document.getElementById('durationOptions');
+            const urgentOption = document.getElementById('urgentOption');
+            
+            let optionsHTML = '';
+            
+            switch(service) {
+                case 'assignments':
+                case 'ppts':
+                    optionsHTML = `
+                        <div class="duration-option active" data-days="2" data-price="500">Standard (2 days)</div>
+                        <div class="duration-option" data-days="1" data-price="39">Express (1 day) - 30% extra</div>
+                    `;
+                    urgentOption.style.display = 'block';
+                    break;
+                    
+                case 'thesis':
+                    optionsHTML = `
+                        <div class="duration-option active" data-days="4" data-price="1000">Standard (4 days)</div>
+                        <div class="duration-option" data-days="2" data-price="390">Express (2 days) - 30% extra</div>
+                    `;
+                    urgentOption.style.display = 'block';
+                    break;
+                    
+                case 'notebooks':
+                    optionsHTML = `
+                        <div class="duration-option active" data-days="14" data-price="3250">Standard (2 weeks)</div>
+                        <div class="duration-option" data-days="7" data-price="104">Express (1 week) - 30% extra</div>
+                        <div class="duration-option" data-days="30" data-price="120">Extended (1 month)</div>
+                    `;
+                    urgentOption.style.display = 'block';
+                    break;
+            }
+            
+            durationOptions.innerHTML = optionsHTML;
+            
+            // Add event listeners to duration options
+            const durationOptionsElements = document.querySelectorAll('.duration-option');
+            durationOptionsElements.forEach(option => {
+                option.addEventListener('click', function() {
+                    durationOptionsElements.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Scroll to form
+            document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Show payment options
+        function showPaymentOptions() {
+            const durationOption = document.querySelector('.duration-option.active');
+            const isUrgent = document.getElementById('urgent').checked;
+            
+            if (!durationOption) {
+                alert('Please select a delivery duration first.');
+                return;
+            }
+            
+            let basePrice = parseInt(durationOption.getAttribute('data-price'));
+            let finalPrice = isUrgent ? Math.round(basePrice * 1.3) : basePrice;
+            let urgentText = isUrgent ? ' (Including urgent charges)' : '';
+            
+            const paymentOptions = document.getElementById('paymentOptions');
+            paymentOptions.innerHTML = `
+                <h3 style="margin-bottom: 15px; color: var(--primary-color);">Select Payment Method</h3>
+                <div class="payment-option" data-method="card">
+                    <div>
+                        <i class="fas fa-credit-card" style="margin-right: 10px;"></i>
+                        <strong>Credit/Debit Card</strong>
+                        <p style="font-size: 14px; color: #666; margin-top: 5px;">Secure payment via Stripe</p>
+                    </div>
+                    <div class="payment-price">Rs${finalPrice}</div>
+                </div>
+                
+                <div class="payment-option" data-method="cash">
+                    <div>
+                        <i class="fas fa-money-bill-wave" style="margin-right: 10px;"></i>
+                        <strong>Cash on Delivery</strong>
+                        <p style="font-size: 14px; color: #666; margin-top: 5px;">Pay when you receive the work</p>
+                    </div>
+                    <div class="payment-price">Rs${finalPrice}</div>
+                </div>
+                <p style="margin-top: 15px; font-size: 14px; color: #666; text-align: center;">Total: Rs${finalPrice}${urgentText}</p>
+            `;
+            
+            paymentOptions.style.display = 'block';
+            
+            // Add event listeners to payment options
+            const paymentOptionElements = document.querySelectorAll('.payment-option');
+            paymentOptionElements.forEach(option => {
+                option.addEventListener('click', function() {
+                    const method = this.getAttribute('data-method');
+                    processPayment(method, finalPrice);
+                });
+            });
+        }
+        
+        // Process payment
+        function processPayment(method, amount) {
+            let message = `Payment of Rs${amount} via ${method.toUpperCase()} processed successfully! `;
+            message += "Our team will contact you shortly with further details.";
+            
+            alert(message);
+            
+            // Reset form
+            document.getElementById('orderForm').reset();
+            document.getElementById('paymentOptions').style.display = 'none';
+            document.querySelectorAll('.duration-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            document.querySelector('.duration-option').classList.add('active');
+            
+            // Scroll to top of form
+            document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
