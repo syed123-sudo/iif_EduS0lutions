@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPro Solutions | Professional Academic Assistance</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EMAILJS LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -39,19 +41,17 @@
         }
         
         /* Logo watermark */
-        /* Logo watermark */
-/* Logo watermark */
-.watermark {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="rgba(52, 152, 219, 0.05)" transform="rotate(-30 200 100)">iif_Edu Solutions</text></svg>');
-    background-repeat: repeat;
-    pointer-events: none;
-    z-index: -1;
-}
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="rgba(52, 152, 219, 0.05)" transform="rotate(-30 200 100)">iif_Edu Solutions</text></svg>');
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: -1;
+        }
         
         /* Header & Logo */
         header {
@@ -173,6 +173,22 @@
             border-radius: 5px;
             margin-top: 15px;
             display: none;
+        }
+        
+        .success-message {
+            color: var(--success-color);
+            background-color: rgba(39, 174, 96, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .info-message {
+            color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
         }
         
         /* Logout button */
@@ -435,6 +451,22 @@
             gap: 20px;
         }
         
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        textarea:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
         .duration-options {
             display: flex;
             flex-wrap: wrap;
@@ -621,6 +653,48 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* Code input styling */
+        #verificationCode {
+            font-size: 24px;
+            letter-spacing: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .resend-code {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .resend-code a {
+            color: var(--secondary-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .countdown {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 10px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -634,27 +708,46 @@
                 </div>
             </div>
             
-            <form id="loginForm" class="login-form">
+            <!-- STEP 1: ENTER EMAIL -->
+            <form id="emailSubmitForm" class="login-form">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <label for="loginEmail">Enter Your Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="student@example.com" required>
                 </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
+                <button type="submit" class="login-btn" id="sendCodeBtn">
+                    Send Verification Code
+                </button>
+                <div id="emailMessage" class="info-message" style="display: none;">
+                    <i class="fas fa-paper-plane"></i> <span id="messageText">Sending code to your email...</span>
                 </div>
-                
-                <button type="submit" class="login-btn">Login to Dashboard</button>
-                
-                <div id="errorMessage" class="error-message">
-                    <i class="fas fa-exclamation-circle"></i> Incorrect email or password. Please try again.
-                </div>
-                
-                <p style="margin-top: 20px; color: #666; font-size: 14px;">
-                    Demo login: email: student@example.com | password: demo123
-                </p>
+                <div class="spinner" id="emailSpinner"></div>
             </form>
+            
+            <!-- STEP 2: ENTER CODE (Initially Hidden) -->
+            <form id="codeVerificationForm" class="login-form" style="display: none;">
+                <div class="form-group">
+                    <label for="verificationCode">Enter 6-Digit Verification Code</label>
+                    <input type="text" id="verificationCode" placeholder="123456" maxlength="6" required>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">Code expires in: <span id="countdownTimer" class="countdown">15:00</span></div>
+                </div>
+                <button type="submit" class="login-btn" style="background-color: var(--success-color);" id="verifyBtn">
+                    Verify & Login
+                </button>
+                <button type="button" id="goBackToEmail" class="login-btn" style="background-color: #95a5a6; margin-top: 10px;">
+                    <i class="fas fa-arrow-left"></i> Use Different Email
+                </button>
+                <div id="codeError" class="error-message" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i> Invalid or expired code. Please try again.
+                </div>
+                <div class="resend-code">
+                    Didn't receive code? <a id="resendCodeLink">Resend Code</a>
+                </div>
+                <div class="spinner" id="codeSpinner"></div>
+            </form>
+            
+            <p style="margin-top: 20px; color: #666; font-size: 14px; text-align: center;">
+                You will receive a one-time code to log in. No password needed.
+            </p>
         </div>
     </div> 
     
@@ -707,7 +800,7 @@
                     </div>
                     
                     <div class="service-card">
-                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixlib=rb-1.2.1&auto=format&fit=crop&w-1350&q=80');"></div>
+                        <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
                         <div class="service-content">
                             <h3>Presentations (PPTs)</h3>
                             <p>Professional PowerPoint presentations with engaging visuals and well-structured content.</p>
@@ -744,10 +837,7 @@
                     <p>Founded in 2025, iif_Edu Solutions has established itself as a premier provider of academic assistance services. Our mission is to support students in achieving their educational goals by providing high-quality, customized academic work.</p>
                     <p>We understand the pressures of academic life and the challenges students face in balancing coursework, part-time jobs, and personal commitments. That's why we've assembled a team of experienced professionals, including PhD holders, subject matter experts, and former academicians, to deliver work that meets the highest standards.</p>
                     <p>At iif_Edu Solutions, we pride ourselves on our commitment to quality, originality, and timely delivery. All our work is thoroughly researched, properly referenced, and tailored to meet your specific requirements. We maintain strict confidentiality and ensure that all work is plagiarism-free.</p>
-                    <p>Our services are designed to complement your learning journey, providing you with models of excellent academic work that you can learn from and reference in your own studies. We believe in empowering students through knowledge and supporting them in their academic endeavors.</p>
-                    <p>With thousands of satisfied clients across universities worldwide, iif_Edu Solutions has built a reputation for reliability, professionalism, and excellence. We're not just a service; we're your academic partners, dedicated to helping you succeed.</p>
-                    <p>Our team is available 24/7 to address your queries and provide updates on your orders. We offer unlimited revisions to ensure complete satisfaction and maintain open communication throughout the process.</p>
-                    <p>Whether you're an undergraduate struggling with a complex assignment, a graduate student needing help with your thesis, or a professional requiring a well-crafted presentation, iif_Edu Solutions is here to help you excel.</p>
+                    <p>With thousands of satisfied clients across universities worldwide, iif_Edu Solutions has built a reputation for reliability, professionalism, and excellence. We're your academic partners, dedicated to helping you succeed.</p>
                 </div>
             </div>
         </section>
@@ -865,8 +955,6 @@
                         <h3>Quick Links</h3>
                         <p><a href="#" style="color: #ddd; text-decoration: none;">Home</a></p>
                         <p><a href="#orderPage" style="color: #ddd; text-decoration: none;">Our Services</a></p>
-                        <p><a href="#" style="color: #ddd; text-decoration: none;">Privacy Policy</a></p>
-                        <p><a href="#" style="color: #ddd; text-decoration: none;">Terms of Service</a></p>
                     </div>
                 </div>
                 
@@ -878,9 +966,24 @@
     </div>
 
     <script>
-        // Demo login credentials
-        const DEMO_EMAIL = "student@example.com";
-        const DEMO_PASSWORD = "demo123";
+     const EMAILJS_CONFIG = {
+    PUBLIC_KEY: "kjtMbPwUtAMNQaqcS",
+    SERVICE_ID: "service_n8cn6po",
+    ORDER_TEMPLATE_ID: "template_9uvdlq6",
+    LOGIN_TEMPLATE_ID: "template_9uvdlq6"
+};
+        
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+            console.log("EmailJS initialized successfully");
+        })();
+        
+        // Variables for login system
+        let generatedCode = '';
+        let userEmailForLogin = '';
+        let codeExpiryTime = null;
+        let countdownInterval = null;
         
         // Check if user is already logged in
         document.addEventListener('DOMContentLoaded', function() {
@@ -890,28 +993,164 @@
                 showMainContent();
             }
             
-            // Login form submission
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
+            // ============ PASSWORDLESS LOGIN SYSTEM ============
+            
+            // 1. Handle Email Submission
+            document.getElementById('emailSubmitForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
+                userEmailForLogin = document.getElementById('loginEmail').value.trim();
                 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const errorMessage = document.getElementById('errorMessage');
-                
-                if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-                    // Successful login
-                    localStorage.setItem('isLoggedIn', 'true');
-                    showMainContent();
-                } else {
-                    // Show error
-                    errorMessage.style.display = 'block';
+                if (!userEmailForLogin || !isValidEmail(userEmailForLogin)) {
+                    showMessage("emailMessage", "Please enter a valid email address", "error");
+                    return;
                 }
+                
+                // Show loading state
+                const sendBtn = document.getElementById('sendCodeBtn');
+                const originalText = sendBtn.innerHTML;
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                sendBtn.disabled = true;
+                
+                document.getElementById('emailSpinner').style.display = 'block';
+                showMessage("emailMessage", "Sending verification code to your email...", "info");
+                
+                // Generate a random 6-digit code
+                generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+                codeExpiryTime = Date.now() + (15 * 60 * 1000); // 15 minutes from now
+                
+                // Prepare email parameters
+               const templateParams = {
+    email: userEmailForLogin,     // Changed 'to_email' to 'email'
+    title: generatedCode,         // Changed 'code' to 'title'
+    name: "iif_Edu Solutions"     // Changed 'service_name' to 'name'
+};
+                
+                try {
+                    // Send code via EmailJS
+                    await emailjs.send(
+                        EMAILJS_CONFIG.SERVICE_ID,
+                        EMAILJS_CONFIG.LOGIN_TEMPLATE_ID,
+                        templateParams
+                    );
+                    
+                    // Success - show code entry form
+                    showMessage("emailMessage", "✓ Code sent! Check your email (and spam folder).", "success");
+                    
+                    // Switch to code entry form
+                    setTimeout(() => {
+                        document.getElementById('emailSubmitForm').style.display = 'none';
+                        document.getElementById('codeVerificationForm').style.display = 'block';
+                        document.getElementById('verificationCode').focus();
+                        startCountdown();
+                    }, 1000);
+                    
+                    // Store email for later use (in order notification)
+                    localStorage.setItem('userEmail', userEmailForLogin);
+                    
+                } catch (error) {
+    console.error('=== EMAIL SEND FAILED ===');
+    console.error('Full Error Object:', error);
+    console.error('Error Status:', error.status);
+    console.error('Error Text:', error.text);
+    console.error('Template ID used:', EMAILJS_CONFIG.LOGIN_TEMPLATE_ID);
+    console.error('Service ID used:', EMAILJS_CONFIG.SERVICE_ID);
+    console.error('=== END ERROR ===');
+    
+    showMessage("emailMessage", "Failed to send. Check browser console (F12) for details.", "error");
+}
             });
+            
+            // 2. Handle Code Verification
+            document.getElementById('codeVerificationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const enteredCode = document.getElementById('verificationCode').value.trim();
+                const codeError = document.getElementById('codeError');
+                const verifyBtn = document.getElementById('verifyBtn');
+                
+                // Show loading
+                const originalText = verifyBtn.innerHTML;
+                verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+                verifyBtn.disabled = true;
+                document.getElementById('codeSpinner').style.display = 'block';
+                
+                // Simulate verification delay
+                setTimeout(() => {
+                    const now = Date.now();
+                    
+                    if (enteredCode === generatedCode && generatedCode !== '' && now < codeExpiryTime) {
+                        // SUCCESSFUL LOGIN
+                        localStorage.setItem('isLoggedIn', 'true');
+                        showMessage("codeError", "✓ Code verified! Logging you in...", "success");
+                        
+                        setTimeout(() => {
+                            showMainContent();
+                            clearInterval(countdownInterval);
+                        }, 1000);
+                        
+                    } else if (now >= codeExpiryTime) {
+                        // CODE EXPIRED
+                        showMessage("codeError", "Code has expired. Please request a new one.", "error");
+                        generatedCode = '';
+                    } else {
+                        // INVALID CODE
+                        showMessage("codeError", "Invalid code. Please check and try again.", "error");
+                    }
+                    
+                    // Reset button
+                    verifyBtn.innerHTML = originalText;
+                    verifyBtn.disabled = false;
+                    document.getElementById('codeSpinner').style.display = 'none';
+                }, 1000);
+            });
+            
+            // 3. "Go Back" button
+            document.getElementById('goBackToEmail').addEventListener('click', function() {
+                document.getElementById('codeVerificationForm').style.display = 'none';
+                document.getElementById('emailSubmitForm').style.display = 'block';
+                document.getElementById('emailMessage').style.display = 'none';
+                document.getElementById('codeError').style.display = 'none';
+                document.getElementById('verificationCode').value = '';
+                document.getElementById('loginEmail').value = userEmailForLogin;
+                document.getElementById('loginEmail').focus();
+                clearInterval(countdownInterval);
+                generatedCode = '';
+            });
+            
+            // 4. Resend code link
+            document.getElementById('resendCodeLink').addEventListener('click', function() {
+                if (!userEmailForLogin) return;
+                
+                // Generate new code
+                generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+                codeExpiryTime = Date.now() + (15 * 60 * 1000);
+                
+                const templateParams = {
+                    to_email: userEmailForLogin,
+                    code: generatedCode,
+                    service_name: "iif_Edu Solutions"
+                };
+                
+                emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.LOGIN_TEMPLATE_ID,
+                    templateParams
+                ).then(() => {
+                    showMessage("codeError", "✓ New code sent! Check your email.", "success");
+                    clearInterval(countdownInterval);
+                    startCountdown();
+                }).catch(error => {
+                    showMessage("codeError", "Failed to resend code. Try again.", "error");
+                });
+            });
+            
+            // ============ EXISTING WEBSITE FUNCTIONALITY ============
             
             // Logout functionality
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
                 showLoginPage();
+                clearInterval(countdownInterval);
             });
             
             // Explore services button
@@ -932,39 +1171,86 @@
             document.getElementById('paymentButton').addEventListener('click', function() {
                 showPaymentOptions();
             });
+            
+            // Auto-advance code input
+            document.getElementById('verificationCode').addEventListener('input', function(e) {
+                if (this.value.length === 6) {
+                    document.getElementById('verifyBtn').focus();
+                }
+            });
         });
         
-        // Show main content after login
+        // ============ HELPER FUNCTIONS ============
+        
+        function showMessage(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
+            element.className = type === 'error' ? 'error-message' : type === 'success' ? 'success-message' : 'info-message';
+            element.style.display = 'block';
+        }
+        
+        function startCountdown() {
+            clearInterval(countdownInterval);
+            
+            function updateCountdown() {
+                const now = Date.now();
+                const timeLeft = codeExpiryTime - now;
+                
+                if (timeLeft <= 0) {
+                    document.getElementById('countdownTimer').textContent = "00:00";
+                    clearInterval(countdownInterval);
+                    showMessage("codeError", "Code has expired. Please request a new one.", "error");
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60000);
+                const seconds = Math.floor((timeLeft % 60000) / 1000);
+                document.getElementById('countdownTimer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+        
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        // ============ EXISTING WEBSITE FUNCTIONS ============
+        
         function showMainContent() {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
         }
         
-        // Show login page
         function showLoginPage() {
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('mainContent').style.display = 'none';
             document.getElementById('orderPage').style.display = 'none';
             document.getElementById('orderFormContainer').style.display = 'none';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('errorMessage').style.display = 'none';
+            
+            // Reset login forms
+            document.getElementById('emailSubmitForm').style.display = 'block';
+            document.getElementById('codeVerificationForm').style.display = 'none';
+            document.getElementById('emailMessage').style.display = 'none';
+            document.getElementById('codeError').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('verificationCode').value = '';
+            
+            clearInterval(countdownInterval);
+            generatedCode = '';
         }
         
-        // Show order page
         function showOrderPage() {
             document.getElementById('orderPage').style.display = 'block';
             document.getElementById('orderFormContainer').style.display = 'none';
-            
-            // Scroll to order page
             document.getElementById('orderPage').scrollIntoView({ behavior: 'smooth' });
         }
         
-        // Show order form for selected service
         function showOrderForm(service) {
             document.getElementById('orderFormContainer').style.display = 'block';
             
-            // Set service-specific details
             const serviceTitles = {
                 assignments: 'Assignments',
                 ppts: 'Presentations (PPTs)',
@@ -975,7 +1261,7 @@
             const serviceTitle = serviceTitles[service];
             document.querySelector('.order-title h2').textContent = `Order ${serviceTitle}`;
             
-            // Set up duration options based on service
+            // Set up duration options
             const durationOptions = document.getElementById('durationOptions');
             const urgentOption = document.getElementById('urgentOption');
             
@@ -986,7 +1272,7 @@
                 case 'ppts':
                     optionsHTML = `
                         <div class="duration-option active" data-days="2" data-price="500">Standard (2 days)</div>
-                        <div class="duration-option" data-days="1" data-price="39">Express (1 day) - 30% extra</div>
+                        <div class="duration-option" data-days="1" data-price="650">Express (1 day) - 30% extra</div>
                     `;
                     urgentOption.style.display = 'block';
                     break;
@@ -994,16 +1280,16 @@
                 case 'thesis':
                     optionsHTML = `
                         <div class="duration-option active" data-days="4" data-price="1000">Standard (4 days)</div>
-                        <div class="duration-option" data-days="2" data-price="390">Express (2 days) - 30% extra</div>
+                        <div class="duration-option" data-days="2" data-price="1300">Express (2 days) - 30% extra</div>
                     `;
                     urgentOption.style.display = 'block';
                     break;
                     
                 case 'notebooks':
                     optionsHTML = `
-                        <div class="duration-option active" data-days="14" data-price="3250">Standard (2 weeks)</div>
-                        <div class="duration-option" data-days="7" data-price="104">Express (1 week) - 30% extra</div>
-                        <div class="duration-option" data-days="30" data-price="120">Extended (1 month)</div>
+                        <div class="duration-option active" data-days="14" data-price="3000">Standard (2 weeks)</div>
+                        <div class="duration-option" data-days="7" data-price="3900">Express (1 week) - 30% extra</div>
+                        <div class="duration-option" data-days="30" data-price="5000">Extended (1 month)</div>
                     `;
                     urgentOption.style.display = 'block';
                     break;
@@ -1020,11 +1306,56 @@
                 });
             });
             
-            // Scroll to form
             document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
         }
         
-        // Show payment options
+        // ============ EMAIL NOTIFICATION FOR ORDERS ============
+        
+        async function sendOrderEmail(orderData) {
+    try {
+        const templateParams = {
+            email: "ifsyed66@gmail.com",  // YOUR EMAIL - KEEP THIS!
+            title: `📦 NEW ORDER: ${orderData.serviceType} - Rs${orderData.price}`,
+            name: `Order Details:
+• Service: ${orderData.serviceType}
+• Customer: ${orderData.userEmail}
+• Subject: ${orderData.subject}
+• Topic: ${orderData.topic}`,
+            details: `Work Requirements:
+${orderData.details}
+
+Delivery: ${orderData.duration} days
+Urgent: ${orderData.urgent}`,
+            time: new Date().toLocaleString()
+        };
+
+    
+
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.ORDER_TEMPLATE_ID,
+                    templateParams
+                );
+                console.log('Order email sent successfully!', response.status);
+                return true;
+}
+             catch (error) {
+    console.error('=== ORDER EMAIL FAILED ===');
+    console.error('Full Error:', error);
+    console.error('Error Status:', error.status);
+    console.error('Error Text:', error.text);
+    console.error('What we tried to send:', {
+        email: templateParams.email,
+        title: templateParams.title,
+        name: templateParams.name,
+        details: templateParams.details,
+        time: templateParams.time
+    });
+    console.error('=== END ERROR ===');
+    return false;
+}
+        }
+        
         function showPaymentOptions() {
             const durationOption = document.querySelector('.duration-option.active');
             const isUrgent = document.getElementById('urgent').checked;
@@ -1074,23 +1405,61 @@
         }
         
         // Process payment
-        function processPayment(method, amount) {
+function processPayment(method, amount) {
+    // 1. COLLECT ORDER DATA
+    const orderData = {
+        serviceType: document.querySelector('.order-title h2').textContent.replace('Order ', ''),
+        subject: document.getElementById('subject').value,
+        topic: document.getElementById('topic').value,
+        details: document.getElementById('details').value,
+        duration: document.querySelector('.duration-option.active').getAttribute('data-days'),
+        urgent: document.getElementById('urgent').checked ? "Yes" : "No",
+        price: amount,
+        userEmail: localStorage.getItem('userEmail') || 'Not provided'
+    };
+
+    // 2. SEND EMAIL NOTIFICATION (TO YOUR GMAIL)
+    sendOrderEmail(orderData)
+        .then(emailSent => {
+            // 3. SHOW SUCCESS MESSAGE
             let message = `Payment of Rs${amount} via ${method.toUpperCase()} processed successfully! `;
-            message += "Our team will contact you shortly with further details.";
-            
+            if (emailSent) {
+                message += "✓ Order notification sent to admin.";
+            }
+            message += "\n\nOur team will contact you shortly with further details.";
             alert(message);
-            
-            // Reset form
+
+            // 4. RESET FORM
             document.getElementById('orderForm').reset();
             document.getElementById('paymentOptions').style.display = 'none';
             document.querySelectorAll('.duration-option').forEach(opt => {
                 opt.classList.remove('active');
             });
-            document.querySelector('.duration-option').classList.add('active');
-            
-            // Scroll to top of form
+            if (document.querySelector('.duration-option')) {
+                document.querySelector('.duration-option').classList.add('active');
+            }
             document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
-        }
+        })
+        .catch(error => {
+            console.error('Email failed:', error);
+            // Still show success but mention email issue
+            let message = `Payment of Rs${amount} via ${method.toUpperCase()} processed successfully! `;
+            message += "\n(Email notification failed, but order was recorded)";
+            message += "\n\nOur team will contact you shortly with further details.";
+            alert(message);
+
+            // Still reset the form
+            document.getElementById('orderForm').reset();
+            document.getElementById('paymentOptions').style.display = 'none';
+            document.querySelectorAll('.duration-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            if (document.querySelector('.duration-option')) {
+                document.querySelector('.duration-option').classList.add('active');
+            }
+            document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
+        });
+}
     </script>
 </body>
 </html>
