@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- EMAILJS LIBRARY -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Confetti for celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -22,6 +24,7 @@
             --light-color: #ecf0f1;
             --dark-color: #2c3e50;
             --success-color: #27ae60;
+            --warning-color: #f39c12;
             --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
@@ -134,7 +137,7 @@
             color: var(--primary-color);
         }
         
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
@@ -143,7 +146,7 @@
             transition: var(--transition);
         }
         
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: var(--secondary-color);
             outline: none;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
@@ -186,6 +189,14 @@
         .info-message {
             color: var(--secondary-color);
             background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .warning-message {
+            color: var(--warning-color);
+            background-color: rgba(243, 156, 18, 0.1);
             padding: 10px;
             border-radius: 5px;
             margin-top: 15px;
@@ -252,6 +263,57 @@
             background-color: #2980b9;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Additional Offers Section */
+        .additional-offers-section {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .offers-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+        }
+        
+        .suggestion-box {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .interest-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .interest-btn {
+            padding: 12px 25px;
+            border-radius: 5px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .interest-btn.yes {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .interest-btn.no {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .interest-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         /* Services Section */
@@ -343,6 +405,24 @@
         .about-content p {
             margin-bottom: 20px;
             font-size: 17px;
+        }
+        
+        .contact-method {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .contact-method:hover {
+            background-color: var(--secondary-color);
+            color: white;
         }
         
         /* Order Page */
@@ -544,6 +624,8 @@
             border-bottom: 1px solid #eee;
             cursor: pointer;
             transition: var(--transition);
+            margin-bottom: 10px;
+            border-radius: 5px;
         }
         
         .payment-option:last-child {
@@ -552,12 +634,64 @@
         
         .payment-option:hover {
             background-color: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         
         .payment-price {
             font-weight: 700;
             color: var(--success-color);
             font-size: 20px;
+        }
+        
+        .half-payment-section {
+            background-color: rgba(243, 156, 18, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .verification-code-section {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .code-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .code-input-group input {
+            flex: 1;
+            padding: 12px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
+        
+        .confirm-order-btn {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .confirm-order-btn:hover {
+            background-color: #219653;
         }
         
         .whatsapp-contact {
@@ -576,6 +710,54 @@
             font-weight: 600;
             text-decoration: none;
             font-size: 18px;
+        }
+        
+        /* Payment Details Modal */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .modal-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .easypaisa-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #0037A1;
+        }
+        
+        .close-modal {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            margin-top: 20px;
         }
         
         /* Footer */
@@ -652,6 +834,10 @@
             .service-buttons {
                 grid-template-columns: 1fr;
             }
+            
+            .interest-buttons {
+                flex-direction: column;
+            }
         }
         
         /* Code input styling */
@@ -694,6 +880,35 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        /* Celebration animation */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        
+        .celebration-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .celebration-content h2 {
+            color: var(--success-color);
+            font-size: 32px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -781,6 +996,39 @@
             </div>
         </section>
         
+        <!-- Additional Offers Section -->
+        <section class="additional-offers-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Additional Offers</h2>
+                    <p>We provide additional services to meet all your academic needs</p>
+                </div>
+                
+                <div class="offers-container">
+                    <h3>We also provide DOCX Translation Service</h3>
+                    <p>If you need to translate your documents, please let us know your interest</p>
+                    
+                    <div class="interest-buttons">
+                        <button class="interest-btn yes" id="interestYes">
+                            <i class="fas fa-check-circle"></i> Interested
+                        </button>
+                        <button class="interest-btn no" id="interestNo">
+                            <i class="fas fa-times-circle"></i> Not Interested
+                        </button>
+                    </div>
+                    
+                    <div class="suggestion-box">
+                        <h4>Your Suggestions</h4>
+                        <p>If you want another feature or have any suggestions, please write below:</p>
+                        <textarea id="suggestionText" rows="4" placeholder="Enter your suggestions here..."></textarea>
+                        <button id="submitSuggestion" class="cta-button" style="margin-top: 15px;">
+                            <i class="fas fa-paper-plane"></i> Submit Suggestion
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <!-- Services Section -->
         <section class="services">
             <div class="container">
@@ -836,8 +1084,11 @@
                     <h2>About iif_Edu Solutions</h2>
                     <p>Founded in 2025, iif_Edu Solutions has established itself as a premier provider of academic assistance services. Our mission is to support students in achieving their educational goals by providing high-quality, customized academic work.</p>
                     <p>We understand the pressures of academic life and the challenges students face in balancing coursework, part-time jobs, and personal commitments. That's why we've assembled a team of experienced professionals, including PhD holders, subject matter experts, and former academicians, to deliver work that meets the highest standards.</p>
-                    <p>At iif_Edu Solutions, we pride ourselves on our commitment to quality, originality, and timely delivery. All our work is thoroughly researched, properly referenced, and tailored to meet your specific requirements. We maintain strict confidentiality and ensure that all work is plagiarism-free.</p>
-                    <p>With thousands of satisfied clients across universities worldwide, iif_Edu Solutions has built a reputation for reliability, professionalism, and excellence. We're your academic partners, dedicated to helping you succeed.</p>
+                    
+                    <div class="contact-method" id="messageContact">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Click here to send us a message</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -909,6 +1160,25 @@
                             </div>
                         </div>
                         
+                        <div id="halfPaymentSection" class="half-payment-section" style="display: none;">
+                            <h4><i class="fas fa-money-check-alt"></i> Half Payment Required</h4>
+                            <p>You need to pay 50% in advance to confirm your order. After payment, you'll receive a verification code to complete the order.</p>
+                        </div>
+                        
+                        <div id="verificationCodeSection" class="verification-code-section">
+                            <h4><i class="fas fa-shield-alt"></i> Payment Verification</h4>
+                            <p>Enter the 6-digit code you received after making the half payment:</p>
+                            <div class="code-input-group">
+                                <input type="text" id="paymentCode" placeholder="XXXXXX" maxlength="6">
+                                <button type="button" id="verifyPaymentCode" class="cta-button">Verify Code</button>
+                            </div>
+                            <p id="codeMessage" style="margin-top: 10px; font-size: 14px;"></p>
+                        </div>
+                        
+                        <button type="button" id="confirmOrderBtn" class="confirm-order-btn">
+                            <i class="fas fa-check-circle"></i> Confirm Order
+                        </button>
+                        
                         <div class="payment-section">
                             <button type="button" id="paymentButton" class="payment-button">
                                 <i class="fas fa-lock"></i> Proceed to Payment
@@ -955,6 +1225,7 @@
                         <h3>Quick Links</h3>
                         <p><a href="#" style="color: #ddd; text-decoration: none;">Home</a></p>
                         <p><a href="#orderPage" style="color: #ddd; text-decoration: none;">Our Services</a></p>
+                        <p><a href="#additionalOffers" style="color: #ddd; text-decoration: none;">Additional Offers</a></p>
                     </div>
                 </div>
                 
@@ -965,13 +1236,44 @@
         </footer>
     </div>
 
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-mobile-alt"></i> EasyPaisa Payment</h3>
+            <p>Please send the payment to the following EasyPaisa account:</p>
+            
+            <div class="easypaisa-details">
+                <p><strong>Account Name:</strong> Usman Ali</p>
+                <p><strong>Account Number:</strong> 03426697002</p>
+                <p><strong>Amount:</strong> <span id="paymentAmount">Rs. 0</span></p>
+                <p><strong>Payment Type:</strong> <span id="paymentType">Half Payment</span></p>
+            </div>
+            
+            <p>After making the payment, you will receive a 6-digit verification code via SMS/email. Enter that code in the verification field to confirm your order.</p>
+            
+            <button id="closeModal" class="close-modal">Close</button>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div id="celebrationOverlay" class="celebration-overlay">
+        <div class="celebration-content">
+            <h2>🎉 Welcome to iif_Edu Solutions! 🎉</h2>
+            <p>Thank you for visiting our website. We're excited to help you with your academic needs!</p>
+            <button id="closeCelebration" class="cta-button" style="margin-top: 20px;">
+                Let's Get Started
+            </button>
+        </div>
+    </div>
+
     <script>
-     const EMAILJS_CONFIG = {
-    PUBLIC_KEY: "kjtMbPwUtAMNQaqcS",
-    SERVICE_ID: "service_n8cn6po",
-    ORDER_TEMPLATE_ID: "template_9uvdlq6",
-    LOGIN_TEMPLATE_ID: "template_9uvdlq6"
-};
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: "kjtMbPwUtAMNQaqcS",
+            SERVICE_ID: "service_n8cn6po",
+            ORDER_TEMPLATE_ID: "template_9uvdlq6",
+            LOGIN_TEMPLATE_ID: "template_9uvdlq6",
+            SUGGESTION_TEMPLATE_ID: "template_9uvdlq6"
+        };
         
         // Initialize EmailJS
         (function() {
@@ -985,12 +1287,132 @@
         let codeExpiryTime = null;
         let countdownInterval = null;
         
+        // Variables for order system
+        let currentService = '';
+        let halfPaymentCode = '';
+        let paymentVerified = false;
+        
         // Check if user is already logged in
         document.addEventListener('DOMContentLoaded', function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             
             if (isLoggedIn) {
                 showMainContent();
+                // Show celebration on first visit
+                if (!localStorage.getItem('hasVisited')) {
+                    setTimeout(() => {
+                        showCelebration();
+                        localStorage.setItem('hasVisited', 'true');
+                    }, 1000);
+                }
+            }
+            
+            // ============ CELEBRATION FEATURE ============
+            function showCelebration() {
+                const overlay = document.getElementById('celebrationOverlay');
+                overlay.style.display = 'flex';
+                
+                // Launch confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                
+                // More confetti after delay
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 50,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 300);
+            }
+            
+            document.getElementById('closeCelebration').addEventListener('click', function() {
+                document.getElementById('celebrationOverlay').style.display = 'none';
+            });
+            
+            // ============ ADDITIONAL OFFERS FEATURE ============
+            document.getElementById('interestYes').addEventListener('click', function() {
+                sendSuggestionEmail('DOCX Translation', 'Interested in DOCX Translation Service');
+                showMessage('success', 'Thank you for your interest! We will contact you soon about translation services.');
+            });
+            
+            document.getElementById('interestNo').addEventListener('click', function() {
+                sendSuggestionEmail('DOCX Translation', 'Not interested in DOCX Translation Service');
+                showMessage('info', 'Thank you for letting us know.');
+            });
+            
+            document.getElementById('submitSuggestion').addEventListener('click', function() {
+                const suggestion = document.getElementById('suggestionText').value.trim();
+                if (suggestion) {
+                    sendSuggestionEmail('General Suggestion', suggestion);
+                    document.getElementById('suggestionText').value = '';
+                    showMessage('success', 'Thank you for your suggestion! We appreciate your feedback.');
+                } else {
+                    showMessage('error', 'Please enter your suggestion before submitting.');
+                }
+            });
+            
+            async function sendSuggestionEmail(type, suggestion) {
+                const userEmail = localStorage.getItem('userEmail') || 'Not provided';
+                const templateParams = {
+                    email: "ifsyed66@gmail.com",
+                    title: `💡 ${type} - User Feedback`,
+                    name: `User Email: ${userEmail}\n\nSuggestion/Feedback:\n${suggestion}`,
+                    time: new Date().toLocaleString()
+                };
+                
+                try {
+                    await emailjs.send(
+                        EMAILJS_CONFIG.SERVICE_ID,
+                        EMAILJS_CONFIG.SUGGESTION_TEMPLATE_ID,
+                        templateParams
+                    );
+                    console.log('Suggestion email sent successfully');
+                } catch (error) {
+                    console.error('Failed to send suggestion email:', error);
+                }
+            }
+            
+            // ============ MESSAGE INSTEAD OF CALL FEATURE ============
+            document.getElementById('messageContact').addEventListener('click', function() {
+                const userEmail = localStorage.getItem('userEmail') || prompt('Please enter your email to send a message:');
+                if (userEmail) {
+                    const message = prompt('Please enter your message:');
+                    if (message) {
+                        sendMessageEmail(userEmail, message);
+                    }
+                }
+            });
+            
+            async function sendMessageEmail(userEmail, message) {
+                const templateParams = {
+                    email: "ifsyed66@gmail.com",
+                    title: `📩 New Message from ${userEmail}`,
+                    name: `User Email: ${userEmail}\n\nMessage:\n${message}`,
+                    time: new Date().toLocaleString()
+                };
+                
+                try {
+                    await emailjs.send(
+                        EMAILJS_CONFIG.SERVICE_ID,
+                        EMAILJS_CONFIG.SUGGESTION_TEMPLATE_ID,
+                        templateParams
+                    );
+                    showMessage('success', 'Message sent successfully! We will respond soon.');
+                } catch (error) {
+                    console.error('Failed to send message:', error);
+                    showMessage('error', 'Failed to send message. Please try again.');
+                }
             }
             
             // ============ PASSWORDLESS LOGIN SYSTEM ============
@@ -1019,11 +1441,12 @@
                 codeExpiryTime = Date.now() + (15 * 60 * 1000); // 15 minutes from now
                 
                 // Prepare email parameters
-               const templateParams = {
-    email: userEmailForLogin,     // Changed 'to_email' to 'email'
-    title: generatedCode,         // Changed 'code' to 'title'
-    name: "iif_Edu Solutions"     // Changed 'service_name' to 'name'
-};
+                const templateParams = {
+                    email: userEmailForLogin,
+                    title: `Your Login Code: ${generatedCode}`,
+                    name: `Hello,\n\nYour verification code for iif_Edu Solutions is:\n\n${generatedCode}\n\nThis code will expire in 15 minutes.\n\nBest regards,\niif_Edu Solutions Team`,
+                    time: new Date().toLocaleString()
+                };
                 
                 try {
                     // Send code via EmailJS
@@ -1048,16 +1471,14 @@
                     localStorage.setItem('userEmail', userEmailForLogin);
                     
                 } catch (error) {
-    console.error('=== EMAIL SEND FAILED ===');
-    console.error('Full Error Object:', error);
-    console.error('Error Status:', error.status);
-    console.error('Error Text:', error.text);
-    console.error('Template ID used:', EMAILJS_CONFIG.LOGIN_TEMPLATE_ID);
-    console.error('Service ID used:', EMAILJS_CONFIG.SERVICE_ID);
-    console.error('=== END ERROR ===');
-    
-    showMessage("emailMessage", "Failed to send. Check browser console (F12) for details.", "error");
-}
+                    console.error('Email send failed:', error);
+                    showMessage("emailMessage", "Failed to send code. Please try again.", "error");
+                    
+                    // Reset button
+                    sendBtn.innerHTML = originalText;
+                    sendBtn.disabled = false;
+                    document.getElementById('emailSpinner').style.display = 'none';
+                }
             });
             
             // 2. Handle Code Verification
@@ -1085,6 +1506,7 @@
                         setTimeout(() => {
                             showMainContent();
                             clearInterval(countdownInterval);
+                            showCelebration();
                         }, 1000);
                         
                     } else if (now >= codeExpiryTime) {
@@ -1125,9 +1547,10 @@
                 codeExpiryTime = Date.now() + (15 * 60 * 1000);
                 
                 const templateParams = {
-                    to_email: userEmailForLogin,
-                    code: generatedCode,
-                    service_name: "iif_Edu Solutions"
+                    email: userEmailForLogin,
+                    title: `Your New Login Code: ${generatedCode}`,
+                    name: `Hello,\n\nYour new verification code for iif_Edu Solutions is:\n\n${generatedCode}\n\nThis code will expire in 15 minutes.\n\nBest regards,\niif_Edu Solutions Team`,
+                    time: new Date().toLocaleString()
                 };
                 
                 emailjs.send(
@@ -1149,6 +1572,7 @@
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('userEmail');
+                localStorage.removeItem('hasVisited');
                 showLoginPage();
                 clearInterval(countdownInterval);
             });
@@ -1163,6 +1587,7 @@
             serviceButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const service = this.getAttribute('data-service');
+                    currentService = service;
                     showOrderForm(service);
                 });
             });
@@ -1170,6 +1595,67 @@
             // Payment button
             document.getElementById('paymentButton').addEventListener('click', function() {
                 showPaymentOptions();
+            });
+            
+            // Verify payment code
+            document.getElementById('verifyPaymentCode').addEventListener('click', function() {
+                const enteredCode = document.getElementById('paymentCode').value.trim();
+                const codeMessage = document.getElementById('codeMessage');
+                
+                if (enteredCode === halfPaymentCode && halfPaymentCode !== '') {
+                    paymentVerified = true;
+                    codeMessage.innerHTML = '<span style="color: green;">✓ Code verified! You can now confirm your order.</span>';
+                    document.getElementById('confirmOrderBtn').style.display = 'block';
+                    document.getElementById('paymentButton').style.display = 'none';
+                    document.getElementById('paymentOptions').style.display = 'none';
+                } else {
+                    paymentVerified = false;
+                    codeMessage.innerHTML = '<span style="color: red;">✗ Invalid code. Please check and try again.</span>';
+                }
+            });
+            
+            // Confirm order button
+            document.getElementById('confirmOrderBtn').addEventListener('click', function() {
+                if (!paymentVerified) {
+                    showMessage('error', 'Please verify your payment code first.');
+                    return;
+                }
+                
+                // Collect order data
+                const orderData = {
+                    serviceType: document.querySelector('.order-title h2').textContent.replace('Order ', ''),
+                    subject: document.getElementById('subject').value,
+                    topic: document.getElementById('topic').value,
+                    details: document.getElementById('details').value,
+                    duration: document.querySelector('.duration-option.active').getAttribute('data-days'),
+                    urgent: document.getElementById('urgent').checked ? "Yes" : "No",
+                    price: calculateTotalPrice(),
+                    paymentMethod: 'EasyPaisa (Half Payment)',
+                    userEmail: localStorage.getItem('userEmail') || 'Not provided',
+                    verificationCode: halfPaymentCode
+                };
+                
+                // Send order email
+                sendOrderEmail(orderData).then(emailSent => {
+                    let message = `🎉 Order confirmed successfully!\n\n`;
+                    message += `Order Details:\n`;
+                    message += `• Service: ${orderData.serviceType}\n`;
+                    message += `• Subject: ${orderData.subject}\n`;
+                    message += `• Price: Rs${orderData.price}\n`;
+                    message += `• Payment: ${orderData.paymentMethod}\n\n`;
+                    message += `Our team will contact you soon with further details.`;
+                    
+                    alert(message);
+                    
+                    // Reset form
+                    resetOrderForm();
+                    showCelebration();
+                });
+            });
+            
+            // Close payment modal
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('paymentModal').style.display = 'none';
             });
             
             // Auto-advance code input
@@ -1184,9 +1670,25 @@
         
         function showMessage(elementId, message, type) {
             const element = document.getElementById(elementId);
-            element.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
-            element.className = type === 'error' ? 'error-message' : type === 'success' ? 'success-message' : 'info-message';
-            element.style.display = 'block';
+            if (element) {
+                element.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
+                element.className = type === 'error' ? 'error-message' : type === 'success' ? 'success-message' : 'info-message';
+                element.style.display = 'block';
+            } else {
+                // Create temporary message
+                const tempDiv = document.createElement('div');
+                tempDiv.className = type === 'error' ? 'error-message' : type === 'success' ? 'success-message' : 'info-message';
+                tempDiv.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
+                tempDiv.style.position = 'fixed';
+                tempDiv.style.top = '20px';
+                tempDiv.style.right = '20px';
+                tempDiv.style.zIndex = '9999';
+                document.body.appendChild(tempDiv);
+                
+                setTimeout(() => {
+                    tempDiv.remove();
+                }, 5000);
+            }
         }
         
         function startCountdown() {
@@ -1217,7 +1719,7 @@
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
         
-        // ============ EXISTING WEBSITE FUNCTIONS ============
+        // ============ ORDER AND PAYMENT FUNCTIONS ============
         
         function showMainContent() {
             document.getElementById('loginPage').style.display = 'none';
@@ -1261,6 +1763,13 @@
             const serviceTitle = serviceTitles[service];
             document.querySelector('.order-title h2').textContent = `Order ${serviceTitle}`;
             
+            // Reset payment verification
+            paymentVerified = false;
+            document.getElementById('verificationCodeSection').style.display = 'none';
+            document.getElementById('confirmOrderBtn').style.display = 'none';
+            document.getElementById('halfPaymentSection').style.display = 'block';
+            document.getElementById('paymentButton').style.display = 'block';
+            
             // Set up duration options
             const durationOptions = document.getElementById('durationOptions');
             const urgentOption = document.getElementById('urgentOption');
@@ -1271,25 +1780,25 @@
                 case 'assignments':
                 case 'ppts':
                     optionsHTML = `
-                        <div class="duration-option active" data-days="2" data-price="500">Standard (2 days)</div>
-                        <div class="duration-option" data-days="1" data-price="650">Express (1 day) - 30% extra</div>
+                        <div class="duration-option active" data-days="2" data-price="500">Standard (2 days) - Rs500</div>
+                        <div class="duration-option" data-days="1" data-price="650">Express (1 day) - Rs650</div>
                     `;
                     urgentOption.style.display = 'block';
                     break;
                     
                 case 'thesis':
                     optionsHTML = `
-                        <div class="duration-option active" data-days="4" data-price="1000">Standard (4 days)</div>
-                        <div class="duration-option" data-days="2" data-price="1300">Express (2 days) - 30% extra</div>
+                        <div class="duration-option active" data-days="4" data-price="1000">Standard (4 days) - Rs1000</div>
+                        <div class="duration-option" data-days="2" data-price="1300">Express (2 days) - Rs1300</div>
                     `;
                     urgentOption.style.display = 'block';
                     break;
                     
                 case 'notebooks':
                     optionsHTML = `
-                        <div class="duration-option active" data-days="14" data-price="3000">Standard (2 weeks)</div>
-                        <div class="duration-option" data-days="7" data-price="3900">Express (1 week) - 30% extra</div>
-                        <div class="duration-option" data-days="30" data-price="5000">Extended (1 month)</div>
+                        <div class="duration-option active" data-days="14" data-price="3000">Standard (2 weeks) - Rs3000</div>
+                        <div class="duration-option" data-days="7" data-price="3900">Express (1 week) - Rs3900</div>
+                        <div class="duration-option" data-days="30" data-price="5000">Extended (1 month) - Rs5000</div>
                     `;
                     urgentOption.style.display = 'block';
                     break;
@@ -1312,24 +1821,25 @@
         // ============ EMAIL NOTIFICATION FOR ORDERS ============
         
         async function sendOrderEmail(orderData) {
-    try {
-        const templateParams = {
-            email: "ifsyed66@gmail.com",  // YOUR EMAIL - KEEP THIS!
-            title: `📦 NEW ORDER: ${orderData.serviceType} - Rs${orderData.price}`,
-            name: `Order Details:
+            try {
+                const templateParams = {
+                    email: "ifsyed66@gmail.com",
+                    title: `📦 NEW ORDER: ${orderData.serviceType}`,
+                    name: `Order Details:
 • Service: ${orderData.serviceType}
-• Customer: ${orderData.userEmail}
+• Customer Email: ${orderData.userEmail}
 • Subject: ${orderData.subject}
-• Topic: ${orderData.topic}`,
-            details: `Work Requirements:
+• Topic: ${orderData.topic}
+• Price: Rs${orderData.price}
+• Payment Method: ${orderData.paymentMethod}
+• Verification Code: ${orderData.verificationCode}`,
+                    details: `Work Requirements:
 ${orderData.details}
 
 Delivery: ${orderData.duration} days
 Urgent: ${orderData.urgent}`,
-            time: new Date().toLocaleString()
-        };
-
-    
+                    time: new Date().toLocaleString()
+                };
 
                 const response = await emailjs.send(
                     EMAILJS_CONFIG.SERVICE_ID,
@@ -1338,58 +1848,64 @@ Urgent: ${orderData.urgent}`,
                 );
                 console.log('Order email sent successfully!', response.status);
                 return true;
-}
-             catch (error) {
-    console.error('=== ORDER EMAIL FAILED ===');
-    console.error('Full Error:', error);
-    console.error('Error Status:', error.status);
-    console.error('Error Text:', error.text);
-    console.error('What we tried to send:', {
-        email: templateParams.email,
-        title: templateParams.title,
-        name: templateParams.name,
-        details: templateParams.details,
-        time: templateParams.time
-    });
-    console.error('=== END ERROR ===');
-    return false;
-}
+            } catch (error) {
+                console.error('Order email failed:', error);
+                return false;
+            }
         }
         
         function showPaymentOptions() {
+            // Validate form first
+            const subject = document.getElementById('subject').value.trim();
+            const topic = document.getElementById('topic').value.trim();
+            const details = document.getElementById('details').value.trim();
+            
+            if (!subject || !topic || !details) {
+                showMessage('error', 'Please fill in all required fields first.');
+                return;
+            }
+            
             const durationOption = document.querySelector('.duration-option.active');
             const isUrgent = document.getElementById('urgent').checked;
             
             if (!durationOption) {
-                alert('Please select a delivery duration first.');
+                showMessage('error', 'Please select a delivery duration first.');
                 return;
             }
             
             let basePrice = parseInt(durationOption.getAttribute('data-price'));
-            let finalPrice = isUrgent ? Math.round(basePrice * 1.3) : basePrice;
-            let urgentText = isUrgent ? ' (Including urgent charges)' : '';
+            let deliveryCharge = (currentService === 'notebooks') ? 150 : 0;
+            let urgentCharge = isUrgent ? Math.round(basePrice * 0.3) : 0;
+            let totalPrice = basePrice + deliveryCharge + urgentCharge;
+            let halfAmount = Math.round(totalPrice / 2);
             
             const paymentOptions = document.getElementById('paymentOptions');
             paymentOptions.innerHTML = `
                 <h3 style="margin-bottom: 15px; color: var(--primary-color);">Select Payment Method</h3>
-                <div class="payment-option" data-method="card">
+                
+                <div class="payment-option" data-method="easypaisa" data-amount="${halfAmount}">
                     <div>
-                        <i class="fas fa-credit-card" style="margin-right: 10px;"></i>
-                        <strong>Credit/Debit Card</strong>
-                        <p style="font-size: 14px; color: #666; margin-top: 5px;">Secure payment via Stripe</p>
+                        <i class="fas fa-mobile-alt" style="margin-right: 10px; color: #0037A1;"></i>
+                        <strong>EasyPaisa</strong>
+                        <p style="font-size: 14px; color: #666; margin-top: 5px;">Pay half now (50%), rest after delivery</p>
                     </div>
-                    <div class="payment-price">Rs${finalPrice}</div>
+                    <div class="payment-price">Rs${halfAmount}</div>
                 </div>
                 
-                <div class="payment-option" data-method="cash">
+                <div class="payment-option" data-method="international">
                     <div>
-                        <i class="fas fa-money-bill-wave" style="margin-right: 10px;"></i>
-                        <strong>Cash on Delivery</strong>
-                        <p style="font-size: 14px; color: #666; margin-top: 5px;">Pay when you receive the work</p>
+                        <i class="fas fa-globe" style="margin-right: 10px; color: var(--warning-color);"></i>
+                        <strong>International Payment</strong>
+                        <p style="font-size: 14px; color: #666; margin-top: 5px;">Pay via PayPal or Western Union</p>
                     </div>
-                    <div class="payment-price">Rs${finalPrice}</div>
+                    <div class="payment-price">$${(totalPrice / 280).toFixed(2)}</div>
                 </div>
-                <p style="margin-top: 15px; font-size: 14px; color: #666; text-align: center;">Total: Rs${finalPrice}${urgentText}</p>
+                
+                ${deliveryCharge > 0 ? `<p style="margin-top: 10px; font-size: 14px; color: #666;">Delivery charges: Rs${deliveryCharge}</p>` : ''}
+                ${urgentCharge > 0 ? `<p style="font-size: 14px; color: #666;">Urgent charges: Rs${urgentCharge}</p>` : ''}
+                <p style="margin-top: 15px; font-size: 16px; color: var(--primary-color); font-weight: bold;">
+                    Total: Rs${totalPrice} | Half Payment: Rs${halfAmount}
+                </p>
             `;
             
             paymentOptions.style.display = 'block';
@@ -1399,67 +1915,100 @@ Urgent: ${orderData.urgent}`,
             paymentOptionElements.forEach(option => {
                 option.addEventListener('click', function() {
                     const method = this.getAttribute('data-method');
-                    processPayment(method, finalPrice);
+                    if (method === 'easypaisa') {
+                        const amount = this.getAttribute('data-amount');
+                        showEasyPaisaPayment(amount);
+                    } else if (method === 'international') {
+                        showInternationalPayment(totalPrice);
+                    }
                 });
             });
         }
         
-        // Process payment
-function processPayment(method, amount) {
-    // 1. COLLECT ORDER DATA
-    const orderData = {
-        serviceType: document.querySelector('.order-title h2').textContent.replace('Order ', ''),
-        subject: document.getElementById('subject').value,
-        topic: document.getElementById('topic').value,
-        details: document.getElementById('details').value,
-        duration: document.querySelector('.duration-option.active').getAttribute('data-days'),
-        urgent: document.getElementById('urgent').checked ? "Yes" : "No",
-        price: amount,
-        userEmail: localStorage.getItem('userEmail') || 'Not provided'
-    };
+        function showEasyPaisaPayment(amount) {
+            // Generate verification code
+            halfPaymentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // Show payment modal
+            document.getElementById('paymentAmount').textContent = `Rs. ${amount}`;
+            document.getElementById('paymentModal').style.display = 'flex';
+            
+            // Send payment instructions email
+            sendPaymentEmail(amount, halfPaymentCode);
+            
+            // Show verification section
+            document.getElementById('verificationCodeSection').style.display = 'block';
+            document.getElementById('paymentCode').value = '';
+            document.getElementById('codeMessage').innerHTML = '';
+        }
+        
+        function showInternationalPayment(amount) {
+            const usdAmount = (amount / 280).toFixed(2);
+            alert(`For international payments:\n\n1. PayPal: Send $${usdAmount} to usmanali@example.com\n2. Western Union: Use receiver name "Usman Ali"\n3. Bank Transfer: Contact us for details\n\nAfter payment, email us at support@iif_Edusolutions.com with your transaction ID.`);
+        }
+        
+        async function sendPaymentEmail(amount, code) {
+            const userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) return;
+            
+            const templateParams = {
+                email: userEmail,
+                title: `💳 EasyPaisa Payment Instructions - Rs${amount}`,
+                name: `Payment Instructions:
+Amount: Rs${amount}
+EasyPaisa Account: Usman Ali (03426697002)
 
-    // 2. SEND EMAIL NOTIFICATION (TO YOUR GMAIL)
-    sendOrderEmail(orderData)
-        .then(emailSent => {
-            // 3. SHOW SUCCESS MESSAGE
-            let message = `Payment of Rs${amount} via ${method.toUpperCase()} processed successfully! `;
-            if (emailSent) {
-                message += "✓ Order notification sent to admin.";
+After making the payment, use this verification code to confirm your order:
+
+VERIFICATION CODE: ${code}
+
+Please enter this code in the verification field on our website to complete your order.
+
+Thank you for choosing iif_Edu Solutions!`,
+                time: new Date().toLocaleString()
+            };
+            
+            try {
+                await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.LOGIN_TEMPLATE_ID,
+                    templateParams
+                );
+                console.log('Payment instructions email sent');
+            } catch (error) {
+                console.error('Failed to send payment email:', error);
             }
-            message += "\n\nOur team will contact you shortly with further details.";
-            alert(message);
-
-            // 4. RESET FORM
+        }
+        
+        function calculateTotalPrice() {
+            const durationOption = document.querySelector('.duration-option.active');
+            if (!durationOption) return 0;
+            
+            let basePrice = parseInt(durationOption.getAttribute('data-price'));
+            let deliveryCharge = (currentService === 'notebooks') ? 150 : 0;
+            let isUrgent = document.getElementById('urgent').checked;
+            let urgentCharge = isUrgent ? Math.round(basePrice * 0.3) : 0;
+            
+            return basePrice + deliveryCharge + urgentCharge;
+        }
+        
+        function resetOrderForm() {
             document.getElementById('orderForm').reset();
             document.getElementById('paymentOptions').style.display = 'none';
+            document.getElementById('verificationCodeSection').style.display = 'none';
+            document.getElementById('confirmOrderBtn').style.display = 'none';
+            document.getElementById('halfPaymentSection').style.display = 'none';
+            document.getElementById('paymentButton').style.display = 'block';
+            paymentVerified = false;
+            halfPaymentCode = '';
+            
             document.querySelectorAll('.duration-option').forEach(opt => {
                 opt.classList.remove('active');
             });
             if (document.querySelector('.duration-option')) {
                 document.querySelector('.duration-option').classList.add('active');
             }
-            document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
-        })
-        .catch(error => {
-            console.error('Email failed:', error);
-            // Still show success but mention email issue
-            let message = `Payment of Rs${amount} via ${method.toUpperCase()} processed successfully! `;
-            message += "\n(Email notification failed, but order was recorded)";
-            message += "\n\nOur team will contact you shortly with further details.";
-            alert(message);
-
-            // Still reset the form
-            document.getElementById('orderForm').reset();
-            document.getElementById('paymentOptions').style.display = 'none';
-            document.querySelectorAll('.duration-option').forEach(opt => {
-                opt.classList.remove('active');
-            });
-            if (document.querySelector('.duration-option')) {
-                document.querySelector('.duration-option').classList.add('active');
-            }
-            document.getElementById('orderFormContainer').scrollIntoView({ behavior: 'smooth' });
-        });
-}
+        }
     </script>
 </body>
 </html>
